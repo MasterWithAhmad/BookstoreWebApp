@@ -30,6 +30,9 @@ BookStoreWebApp is a web application for managing a bookstore. It allows staff t
 - Customer Management
   ![Customer Management](src/main/resources/templates/screenshots AddAuthorPage.png)
 
+  - SweetAlert
+  ![Success Message](src/main/resources/templates/screenshots/Success.png)
+
 ## Getting Started
 
 ### Prerequisites
