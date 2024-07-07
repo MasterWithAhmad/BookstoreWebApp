@@ -17,6 +17,9 @@ BookStoreWebApp is a web application for managing a bookstore. It allows staff t
 
 ## Screenshots
 
+- Login Page
+  ![LoginPage](src/main/resources/templates/screenshots/LoginPage.png)
+
 - Home Page
   ![Home Page](src/main/resources/templates/screenshots/HomePage.png)
 
@@ -24,10 +27,14 @@ BookStoreWebApp is a web application for managing a bookstore. It allows staff t
   ![Book List](src/main/resources/templates/screenshots/BookListPage.png)
 
 - Authors Page
-  ![Authors Page](src/main/resources/templates/screenshots AddAuthorPage.png)
-
+  ![List of Authors](src/main/resources/templates/screenshots/AuthorsPage.png)
+  
   - SweetAlert
   ![Success Message](src/main/resources/templates/screenshots/Success.png)
+
+
+- Add Book
+  ![AddBookPage](src/main/resources/templates/screenshots/AddBook.png)
 
 ## Getting Started
 
