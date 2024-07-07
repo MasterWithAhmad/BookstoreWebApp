@@ -2,8 +2,6 @@
 
 BookStoreWebApp is a web application for managing a bookstore. It allows staff to manage books, track borrow records, and handle customer information.
 
-![BookStoreWebApp Screenshot](src/main/resources/templates/screenshots_HomePage.png)
-
 ## Features
 
 - **Manage Books**: Add, edit, delete, and view books.
@@ -25,10 +23,8 @@ BookStoreWebApp is a web application for managing a bookstore. It allows staff t
 - Book List
   ![Book List](src/main/resources/templates/screenshots/BookListPage.png)
 
-- Customer Management
-  ![Customer Management](src/main/resources/templates/screenshots/AuthorsPage.png)
-- Customer Management
-  ![Customer Management](src/main/resources/templates/screenshots AddAuthorPage.png)
+- Authors Page
+  ![Authors Page](src/main/resources/templates/screenshots AddAuthorPage.png)
 
   - SweetAlert
   ![Success Message](src/main/resources/templates/screenshots/Success.png)
