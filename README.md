@@ -52,3 +52,21 @@ BookStoreWebApp is a web application for managing a bookstore. It allows staff t
    ```bash
    git clone https://github.com/MasterWithAhmad/BookStoreWebApp.git
    cd BookStoreWebApp
+
+1. ## Set Up the Database:
+   ● Create a PostgreSQL database named bookstore.
+   ●Update the database connection settings in src/main/resources/application.properties:
+   spring.datasource.url=jpa:postgresql://localhost:5432/bookstore
+spring.datasource.username=your_db_username
+spring.datasource.password=your_db_password
+
+3. ## Build the Project:
+   mvn clean install
+   
+4. ## Run the Application
+   mvn spring-boot:run
+## Alternatively, you can run the generated JAR file:
+java -jar target/BookStoreWebApp-0.0.1-SNAPSHOT.jar
+
+4. ## Access the Application:
+   Open your web browser and go to http://localhost:3000.
