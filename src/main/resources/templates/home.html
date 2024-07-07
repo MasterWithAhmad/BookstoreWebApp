@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Book Store</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <div th:replace="fragments/header :: head"></div>
+    <style>
+        /* Add custom styles here */
+        .jumbotron {
+            background-color: #f8f9fa;
+            padding: 2rem;
+            border-radius: 0.5rem;
+        }
+
+    </style>
+</head>
+<body>
+<div class="container mt-4">
+    <div class="jumbotron">
+        <h1 class="display-4">Welcome to Book Store</h1>
+        <p class="lead">Your ultimate platform for managing books and authors efficiently.</p>
+        <hr class="my-4">
+        <p>Explore our vast collection, manage book records effortlessly, and more.</p>
+        <a class="btn btn-primary btn-lg" href="/books/all-books" role="button">Get Started</a>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <h3>Discover a World of Books</h3>
+            <p>Immerse yourself in a diverse selection of books ranging from classic literature to contemporary
+                bestsellers. Our curated collection ensures there's something for every reader.</p>
+        </div>
+        <div class="col-md-6">
+            <h3>Efficient Book Management</h3>
+            <p>Manage your library with ease. Add new books, update details, and keep track of your collection
+                effortlessly using our intuitive interface.</p>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <h3>Stay Updated</h3>
+            <p>Receive notifications about new arrivals, special offers, and exclusive deals. Stay informed and never
+                miss out on the latest additions to our catalog.</p>
+        </div>
+        <div class="col-md-6">
+            <h3>Customer Support</h3>
+            <p>Need assistance? Our dedicated support team is ready to help. Contact us via email or phone, and we'll
+                ensure your queries are addressed promptly.</p>
+            <ul>
+                <li>Email: ahmad.eyhash@gmail.com</li>
+                <li>Phone: +252-617-042-931</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript and Bootstrap JS -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

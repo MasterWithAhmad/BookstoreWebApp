@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer List</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="src\main\resources\static\bootstrap-5.1.3-dist\css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <header th:replace="fragments/header :: head"></header>
+</head>
+<body>
+<div class="container mt-4">
+    <nav th:replace="fragments/navbar :: nav"></nav>
+    <h2>Customer List</h2>
+    <form class="form-inline mb-4">
+        <input class="form-control mr-sm-2" type="search" id="searchInput" placeholder="Search by name or email"
+               aria-label="Search"><i class="fas fa-search"></i>
+    </form>
+    <a th:href="@{/customers/add}" class="btn btn-primary mb-3">
+        <i class="fa fa-plus"></i>Add New Customer</a>
+    <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody id="customerTableBody">
+        <tr th:each="customer : ${customers}">
+            <td th:text="${customer.name}">Customer Name</td>
+            <td th:text="${customer.email}">Email</td>
+            <td th:text="${customer.phone}">Phone</td>
+            <td>
+                <a th:href="@{/customers/edit/{id}(id=${customer.id})}" class="btn btn-sm btn-primary">
+                    <i class="fa fa-edit"></i>Edit
+                </a>
+                <a th:href="@{/customers/{id}/delete(id=${customer.id})}" class="btn btn-sm btn-danger">
+                    <i class="fa fa-trash"></i>Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+<script th:inline="javascript">
+    $(document).ready(function () {
+        $('#searchInput').on('input', function () {
+            var query = $(this).val().toLowerCase().trim();
+            $('#customerTableBody tr').each(function () {
+                var title = $(this).find('td:eq(1)').text().toLowerCase();
+                var customer = $(this).find('td:eq(2)').text().toLowerCase();
+                if (title.includes(query) || customer.includes(query)) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+            if (query.length > 0) {
+                $('#clearSearch').show();
+            } else {
+                $('#clearSearch').hide();
+            }
+        });
+
+        $('#clearSearch').on('click', function () {
+            $('#searchInput').val('');
+            $('#customerTableBody tr').show();
+            $(this).hide();
+        });
+
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('added') === 'true') {
+            swal("Added!", "The customer has been added.", "success");
+        }
+        if (urlParams.get('updated') === 'true') {
+            swal("Updated!", "The customer has been updated.", "success");
+        }
+        if (urlParams.get('deleted') === 'true') {
+            swal("Deleted!", "The customer has been deleted.", "success");
+        }
+        if (urlParams.get('notfound') === 'true') {
+            swal("Not Found!", "The customer does not exist.", "error");
+        }
+    });
+
+    function deleteBook(bookId) {
+    swal({
+        title: "Are you sure?",
+        text: "Once deleted, you will not be able to recover this customer!",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+    })
+    .then((willDelete) => {
+        if (willDelete) {
+            $.ajax({
+                url: '/customers/delete/' + customerId, // Ensure this matches the @GetMapping URL
+                type: 'GET', // Use 'GET' since the backend expects a GET request
+                success: function() {
+                    swal("Deleted!", "The customer has been deleted.", "success")
+                    .then(() => {
+                        location.reload(); // Reload the page after deletion
+                    });
+                },
+                error: function(xhr) {
+                    let message = "An error occurred while deleting the customer.";
+                    if (xhr.status === 403) {
+                        message = "You are not authorized to delete this customer.";
+                    }
+                    swal("Error!", message, "error");
+                }
+            });
+        }
+    });
+}
+
+</script>
+
+
+</script>
+<!-- Footer -->
+<footer class="footer mt-auto py-3 bg-light">
+    <div class="container">
+        <span class="text-muted">&copy; 2024 Book Store. All rights reserved.</span>
+    </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Author</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container mt-4">
+    <h2>Edit Author</h2>
+    <form th:action="@{/authors/edit/{id}(id=${author.id})}" method="post">
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" class="form-control" id="name" name="name" th:value="${author.name}" required>
+        </div>
+        <div class="form-group">
+            <label for="bio">Bio:</label>
+            <textarea class="form-control" id="bio" name="bio" rows="4" th:text="${author.bio}" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+        <a href="/authors/all-authors" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+
+</body>
+</html>

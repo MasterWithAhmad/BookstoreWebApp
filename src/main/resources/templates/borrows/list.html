@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Borrow Records</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <header th:replace="fragments/header :: head"></header>
+</head>
+<body>
+<div class="container mt-4">
+    <nav th:replace="fragments/navbar :: nav"></nav>
+    <h2>Borrow Records</h2>
+    <form class="form-inline mb-4">
+        <input class="form-control mr-sm-2" type="search" id="searchInput" placeholder="Search by title or author"
+               aria-label="Search"><i class="fas fa-search"></i>
+    </form>
+    <a th:href="@{/borrow-records/add}" class="btn btn-primary mb-3">
+        <i class="fa fa-plus"></i>Add New Record</a>
+    <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+        <tr>
+            <th>Customer</th>
+            <th>Book</th>
+            <th>Borrow Date</th>
+            <th>Return Date</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody id="borrowBookTableBody">
+        <tr th:each="borrowRecord : ${borrowRecords}">
+            <td th:text="${borrowRecord.customer.name}">Customer Name</td>
+            <td th:text="${borrowRecord.book.title}">Book Title</td>
+            <td th:text="${borrowRecord.borrowDate}">Borrow Date</td>
+            <td th:text="${borrowRecord.returnDate}">Return Date</td>
+            <td>
+                <a th:href="@{/borrow-records/edit/{id}(id=${borrowRecord.id})}" class="btn btn-sm btn-primary">
+                    <i class="fa fa-edit"></i>Edit</a>
+                <!-- Assuming you are in a Thymeleaf template -->
+                <button type="button" class="btn btn-sm btn-danger"
+                        th:onclick="'javascript:deleteBorrow(' + ${borrowRecord.id} + ')'">
+                    <i class="fa fa-trash"></i>Delete
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+<script th:inline="javascript">
+    $(document).ready(function () {
+        $('#searchInput').on('input', function () {
+            var query = $(this).val().toLowerCase().trim();
+            $('#borrowBookTableBody tr').each(function () {
+                var title = $(this).find('td:eq(1)').text().toLowerCase();
+                var record = $(this).find('td:eq(2)').text().toLowerCase();
+                if (title.includes(query) || record.includes(query)) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+            if (query.length > 0) {
+                $('#clearSearch').show();
+            } else {
+                $('#clearSearch').hide();
+            }
+        });
+
+        $('#clearSearch').on('click', function () {
+            $('#searchInput').val('');
+            $('#bookTableBody tr').show();
+            $(this).hide();
+        });
+
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('added') === 'true') {
+            swal("Added!", "The book has been added.", "success");
+        }
+        if (urlParams.get('updated') === 'true') {
+            swal("Updated!", "The book has been updated.", "success");
+        }
+        if (urlParams.get('deleted') === 'true') {
+            swal("Deleted!", "The book has been deleted.", "success");
+        }
+        if (urlParams.get('notfound') === 'true') {
+            swal("Not Found!", "The book does not exist.", "error");
+        }
+    });
+
+    function deleteBorrow(bookId) {
+    swal({
+        title: "Are you sure?",
+        text: "Once deleted, you will not be able to recover this record!",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+    })
+    .then((willDelete) => {
+        if (willDelete) {
+            $.ajax({
+                url: '/borrow-records/delete/' + bookId, // Ensure this matches the @GetMapping URL
+                type: 'GET', // Use 'GET' since the backend expects a GET request
+                success: function() {
+                    swal("Deleted!", "The record has been deleted.", "success")
+                    .then(() => {
+                        location.reload(); // Reload the page after deletion
+                    });
+                },
+                error: function(xhr) {
+                    let message = "An error occurred while deleting the record.";
+                    if (xhr.status === 403) {
+                        message = "You are not authorized to delete this record.";
+                    }
+                    swal("Error!", message, "error");
+                }
+            });
+        }
+    });
+}
+
+
+</script>
+</body>
+<!-- Footer -->
+<footer class="footer mt-auto py-3 bg-light">
+    <div class="container">
+        <span class="text-muted">&copy; 2024 Book Store. All rights reserved.</span>
+    </div>
+</footer>
+</html>

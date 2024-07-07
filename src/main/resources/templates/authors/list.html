@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: head"></head>
+<body>
+<div class="container mt-4">
+    <h2>Author List</h2>
+    <nav th:replace="fragments/navbar :: nav"></nav>
+    <form class="form-inline mb-4">
+        <input class="form-control mr-sm-2" type="search" id="searchInput" placeholder="Search by name or bio"
+               aria-label="Search"><i class="fas fa-search"></i>
+    </form>
+    <a href="/authors/add" class="btn btn-primary mb-3">
+        <i class="fa fa-plus"></i> Add New Book
+    </a>
+    <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Bio</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody id="authorTableBody">
+        <tr th:each="author : ${authors}">
+            <td th:text="${author.id}"></td>
+            <td th:text="${author.name}"></td>
+            <td th:text="${author.bio}"></td>
+            <td>
+                <a th:href="@{/authors/edit/{id}(id=${author.id})}" class="btn btn-sm btn-primary">
+                    <i class="fa fa-edit"></i>
+                </a>
+                <button type="button" class="btn btn-sm btn-danger"
+                        th:onclick="'javascript:deleteAuthor(' + ${author.id} + ')'">
+                    <i class="fa fa-trash"></i>
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+<script th:inline="javascript">
+    $(document).ready(function () {
+        $('#searchInput').on('input', function () {
+            var query = $(this).val().toLowerCase().trim();
+            $('#authorTableBody tr').each(function () {
+                var name = $(this).find('td:eq(1)').text().toLowerCase();
+                var bio = $(this).find('td:eq(2)').text().toLowerCase();
+                if (name.includes(query) || bio.includes(query)) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+            if (query.length > 0) {
+                $('#clearSearch').show();
+            } else {
+                $('#clearSearch').hide();
+            }
+        });
+
+
+        const urlParams = new URLSearchParams(window.location.search);
+        handleAlerts(urlParams);
+
+        function handleAlerts(params) {
+            if (params.get('added') === 'true') {
+                swal("Added!", "The author has been added.", "success");
+                clearURLParams();
+            }
+            if (params.get('updated') === 'true') {
+                swal("Updated!", "The author has been updated.", "success");
+                clearURLParams();
+            }
+            if (params.get('deleted') === 'true') {
+                swal("Deleted!", "The author has been deleted.", "success");
+                clearURLParams();
+            }
+            if (params.get('notfound') === 'true') {
+                swal("Not Found!", "The author does not exist.", "error");
+                clearURLParams();
+            }
+        }
+
+        function clearURLParams() {
+            if (history.pushState) {
+                var newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+                window.history.pushState({path: newUrl}, '', newUrl);
+            }
+        }
+    });
+
+    function deleteAuthor(authorId) {
+        swal({
+            title: "Are you sure?",
+            text: "Once deleted, you will not be able to recover this author!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+        .then((willDelete) => {
+        if (willDelete) {
+            $.ajax({
+                url: '/authors/delete/' + authorId, // Ensure this matches the @GetMapping URL
+                type: 'GET', // Use 'GET' since the backend expects a GET request
+                success: function() {
+                    swal("Deleted!", "The author has been deleted.", "success")
+                    .then(() => {
+                        location.reload(); // Reload the page after deletion
+                    });
+                },
+                error: function(xhr) {
+                    let message = "An error occurred while deleting the author.";
+                    if (xhr.status === 403) {
+                        message = "You are not authorized to delete this author.";
+                    }
+                    swal("Error!", message, "error");
+                }
+            });
+        }
+    });
+    }
+
+</script>
+<footer th:replace="fragments/footer :: footer"></footer>
+</body>
+</html>

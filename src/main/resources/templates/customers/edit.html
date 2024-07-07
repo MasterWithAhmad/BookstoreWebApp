@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Customer</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+<div class="container mt-4">
+    <h2>Edit Customer</h2>
+    <form th:action="@{/customers/edit/{id}(id=${customer.id})}" th:object="${customer}" method="post"
+          id="editCustomerForm">
+        <input type="hidden" th:field="*{id}"/>
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" class="form-control" id="name" th:field="*{name}" placeholder="Enter name" required/>
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" class="form-control" id="email" th:field="*{email}" placeholder="Enter email" required/>
+        </div>
+        <div class="form-group">
+            <label for="phone">Phone</label>
+            <input type="text" class="form-control" id="phone" th:field="*{phone}" placeholder="Enter phone number"
+                   required/>
+        </div>
+        <button type="button" class="btn btn-primary" onclick="confirmSave()">Save Changes</button>
+        <a th:href="@{/customers/all-customers}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+
+<script th:inline="javascript">
+    function confirmSave() {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'Do you want to update this customer?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, update it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('editCustomerForm').submit();
+            }
+        });
+    }
+</script>
+
+<!-- Conditionally render the success message script -->
+<!--<script th:inline="javascript">-->
+<!--    /<![CDATA[/-->
+<!--    var successMessage = /[[${successMessage}]]/ 'null';-->
+<!--    if (successMessage === 'updated') {-->
+<!--        Swal.fire('Success!', 'Customer has been updated!', 'success');-->
+<!--    }-->
+<!--    /]]>/-->
+<!--</script>-->
+
+<footer>
+    <div th:include="fragments/footer :: footer"></div>
+</footer>
+</body>
+</html>

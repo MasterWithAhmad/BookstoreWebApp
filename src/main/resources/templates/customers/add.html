@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Customer</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+<div class="container mt-4">
+  <div th:include="fragments/navbar :: nav"></div>
+  <h2>Add Customer</h2>
+  <form th:action="@{/customers/add}" th:object="${customer}" method="post" id="customerForm">
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input type="text" class="form-control" id="name" th:field="*{name}" required />
+    </div>
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" class="form-control" id="email" th:field="*{email}" required />
+    </div>
+    <div class="form-group">
+      <label for="phone">Phone</label>
+      <input type="text" class="form-control" id="phone" th:field="*{phone}" required />
+    </div>
+    <button type="button" class="btn btn-primary" onclick="confirmSave()">Save</button>
+    <a th:href="@{/customers/all-customers}" class="btn btn-secondary">Cancel</a>
+  </form>
+</div>
+
+<script th:inline="javascript">
+    function confirmSave() {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'Do you want to save this customer?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, save it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('customerForm').submit();
+            }
+        });
+    }
+
+    /* SweetAlert handling for actions */
+    if ([[${successMessage != null}]]) {
+        if ('[[${successMessage}]' === 'saved') {
+            Swal.fire('Success!', 'Customer has been saved!', 'success');
+        }
+    }
+</script>
+</body>
+</html>

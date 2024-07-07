@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: head"></head>
+<body>
+<div class="container mt-4">
+    <h2>Book List</h2>
+    <nav th:replace="fragments/navbar :: nav"></nav>
+    <form class="form-inline mb-4">
+        <input class="form-control mr-sm-2" type="search" id="searchInput" placeholder="Search by title or author"
+               aria-label="Search"><i class="fas fa-search"></i>
+    </form>
+    <a href="/books/add" class="btn btn-primary mb-4">
+        <i class="fa fa-plus"></i> Add New Book
+    </a>
+    <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+        <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Published Date</th>
+            <th>Category</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody id="bookTableBody">
+        <tr th:each="book : ${books}">
+            <td th:text="${book.id}"></td>
+            <td th:text="${book.title}"></td>
+            <td th:text="${book.author.name}"></td>
+            <td th:text="${book.publishedDate}"></td>
+            <td th:text="${book.category}"></td>
+            <td th:text="${book.quantity}"></td>
+            <td th:text="${book.price}"></td>
+            <td>
+                <a th:href="@{/books/edit/{id}(id=${book.id})}" class="btn btn-sm btn-primary">
+                    <i class="fa fa-edit"></i>
+                </a>
+                <button type="button" class="btn btn-sm btn-danger"
+                        th:onclick="'javascript:deleteBook(' + ${book.id} + ')'">
+                    <i class="fa fa-trash"></i>
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+<script th:inline="javascript">
+    $(document).ready(function () {
+        $('#searchInput').on('input', function () {
+            var query = $(this).val().toLowerCase().trim();
+            $('#bookTableBody tr').each(function () {
+                var name = $(this).find('td:eq(1)').text().toLowerCase();
+                var title = $(this).find('td:eq(2)').text().toLowerCase();
+                if (name.includes(query) || title.includes(query)) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+            if (query.length > 0) {
+                $('#clearSearch').show();
+            } else {
+                $('#clearSearch').hide();
+            }
+        });
+
+
+        const urlParams = new URLSearchParams(window.location.search);
+        handleAlerts(urlParams);
+
+        function handleAlerts(params) {
+            if (params.get('added') === 'true') {
+                swal("Added!", "The book has been added.", "success");
+                clearURLParams();
+            }
+            if (params.get('updated') === 'true') {
+                swal("Updated!", "The book has been updated.", "success");
+                clearURLParams();
+            }
+            if (params.get('deleted') === 'true') {
+                swal("Deleted!", "The book has been deleted.", "success");
+                clearURLParams();
+            }
+            if (params.get('notfound') === 'true') {
+                swal("Not Found!", "The book does not exist.", "error");
+                clearURLParams();
+            }
+        }
+
+        function clearURLParams() {
+            if (history.pushState) {
+                var newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+                window.history.pushState({path: newUrl}, '', newUrl);
+            }
+        }
+    });
+
+    function deleteBook(bookId) {
+        swal({
+            title: "Are you sure?",
+            text: "Once deleted, you will not be able to recover this book!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+        .then((willDelete) => {
+        if (willDelete) {
+            $.ajax({
+                url: '/books/delete/' + bookId, // Ensure this matches the @GetMapping URL
+                type: 'GET', // Use 'GET' since the backend expects a GET request
+                success: function() {
+                    swal("Deleted!", "The book has been deleted.", "success")
+                    .then(() => {
+                        location.reload(); // Reload the page after deletion
+                    });
+                },
+                error: function(xhr) {
+                    let message = "An error occurred while deleting the book.";
+                    if (xhr.status === 403) {
+                        message = "You are not authorized to delete this book.";
+                    }
+                    swal("Error!", message, "error");
+                }
+            });
+        }
+    });
+    }
+
+
+</script>
+
+</script>
+<footer th:replace="fragments/footer :: footer"></footer>
+</body>
+</html>
