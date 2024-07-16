@@ -56,7 +56,7 @@ BookStoreWebApp is a web application for managing a bookstore. It allows staff t
 1. ## Set Up the Database:
    ● Create a PostgreSQL database named bookstore.
    ●Update the database connection settings in src/main/resources/application.properties:
-   spring.datasource.url=jpa:postgresql://localhost:5432/bookstore
+   spring.datasource.url=jpa:postgresql://localhost:5432/your_database_name
 spring.datasource.username=your_db_username
 spring.datasource.password=your_db_password
 
