@@ -5,80 +5,96 @@
     <title>Add New Book</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
-        #container
-        {
-
-            margin-bottom: 50px;
-            padding: 20px;
-            border: 1px solid #3333;
-            border-radius: 10pxc
-        }
-
-        body
-        {
+        body {
             background-color: #f8f9fa;
+            font-family: 'Arial', sans-serif;
         }
 
-        #btn-primary
-        {
+        #container {
+            background-color: #fff;
+            padding: 30px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 50px;
+        }
 
+        h2 {
+            font-family: 'Arial', sans-serif;
+            color: #333;
+        }
+
+        .form-group label {
+            font-weight: bold;
+        }
+
+        .form-control, .form-select {
+            border-radius: 5px;
+            border: 1px solid #ced4da;
+            padding: 10px;
+            transition: border-color 0.3s;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #80bdff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.25);
+        }
+
+        #btn-primary {
+            background-color: #007bff;
             border-color: #007bff;
             transition: background-color 0.3s, border-color 0.3s;
         }
 
-        #btn-primary:hover
-        {
+        #btn-primary:hover {
             background-color: #0056b3;
+            border-color: #004085;
             cursor: pointer;
         }
-
-
     </style>
 </head>
 <body>
-<div class="container mt-5" id="container">
+<div class="container" id="container">
     <h2 class="text-center mb-4">Add New Book</h2>
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <form th:action="@{/books/add}" th:object="${book}" method="post">
-                <div class="form-group">
-                    <label for="title">Title</label>
-                    <input type="text" id="title" name="title" class="form-control" th:field="*{title}" required>
-                </div>
-                <div class="form-group">
-                    <label for="author">Author</label>
-                    <!--          <input type="text" id="author" name="author" class="form-control" th:field="*{author}" required>-->
-                    <select id="author" name="author.id" class="form-control" th:field="*{author.id}" required>
-                        <option value="" disabled selected>Select an Author</option>
-                        <option th:each="author : ${authors}" th:value="${author.id}" th:text="${author.name}"></option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="publishedDate">Published Date</label>
-                    <input type="date" id="publishedDate" name="publishedDate" class="form-control"
-                           th:field="*{publishedDate}" required>
-                </div>
-                <div class="form-group">
-                    <label for="category">Category</label>
-                    <input type="text" id="category" name="category" class="form-control" th:field="*{category}"
-                           required>
-                </div>
-                <div class="form-group">
-                    <label for="quantity">Quantity</label>
-                    <input type="number" id="quantity" name="quantity" class="form-control" th:field="*{quantity}"
-                           required>
-                </div>
-                <div class="form-group">
-                    <label for="price">Price</label>
-                    <input type="number" step="0.01" id="price" name="price" class="form-control" th:field="*{price}"
-                           required>
-                </div>
-                <button type="submit" class="btn btn-primary btn-block" id="btn-primary">Add Book</button>
-            </form>
+    <form th:action="@{/books/add}" th:object="${book}" method="post">
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="title">Title</label>
+                <input type="text" id="title" name="title" class="form-control" th:field="*{title}" placeholder="Enter book title" required>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="author">Author</label>
+                <select id="author" name="author.id" class="form-control form-select" th:field="*{author.id}" required>
+                    <option value="" disabled selected>Select an Author</option>
+                    <option th:each="author : ${authors}" th:value="${author.id}" th:text="${author.name}"></option>
+                </select>
+            </div>
         </div>
-    </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="publishedDate">Published Date</label>
+                <input type="date" id="publishedDate" name="publishedDate" class="form-control" th:field="*{publishedDate}" required>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="category">Category</label>
+                <input type="text" id="category" name="category" class="form-control" th:field="*{category}" placeholder="Enter book category" required>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="quantity">Quantity</label>
+                <input type="number" id="quantity" name="quantity" class="form-control" th:field="*{quantity}" placeholder="Enter quantity" required>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="price">Price</label>
+                <input type="number" step="0.01" id="price" name="price" class="form-control" th:field="*{price}" placeholder="Enter price" required>
+            </div>
+        </div>
+        <div class="text-center mt-4">
+            <button type="submit" class="btn btn-primary" id="btn-primary">Add Book</button>
+        </div>
+    </form>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 </body>
 </html>
-

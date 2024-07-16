@@ -86,7 +86,7 @@ public class CustomerController {
         return "redirect:/customers/all-customers";
     }
 
-    @GetMapping("/{id}/delete")
+    @GetMapping("/delete/{id}")
     public String deleteCustomer(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         customerService.deleteById(id);
         redirectAttributes.addFlashAttribute("successMessage", "deleted");

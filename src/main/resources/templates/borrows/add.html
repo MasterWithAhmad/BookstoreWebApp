@@ -3,38 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Borrow Book Form">
     <title>Borrow Book</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        /* Additional custom styles */
+        .container {
+            max-width: 900px;
+            border: 2px solid #ddd; /* Border around the form */
+            border-radius: 8px;
+            box-shadow: 10px 10px 10px rgba(0,0,0,0.2); /* Box shadow for a subtle lift */
+            padding: 50px;
+            margin-top: 50px;
+        }
+    </style>
 </head>
 <body>
-<div class="container mt-4">
-    <h2>Borrow Book</h2>
+<div class="container">
+    <h2 class="mb-4">Borrow Book</h2>
     <form th:action="@{/borrow-records/add}" th:object="${borrowRecord}" method="post" id="borrowForm">
-        <div class="form-group">
-            <label for="customer">Customer</label>
-            <select class="form-control" id="customer" th:field="*{customer.id}" required>
-                <option th:each="customer : ${customers}" th:value="${customer.id}" th:text="${customer.name}"></option>
-            </select>
+        <div class="form-group row">
+            <label for="customer" class="col-sm-5 col-form-label">Customer</label>
+            <div class="col-sm-9">
+                <select class="form-control" id="customer" th:field="*{customer.id}" required>
+                    <option th:each="customer : ${customers}" th:value="${customer.id}" th:text="${customer.name}"></option>
+                </select>
+            </div>
         </div>
-        <div class="form-group">
-            <label for="book">Book</label>
-            <select class="form-control" id="book" th:field="*{book.id}" required>
-                <option th:each="book : ${books}" th:value="${book.id}" th:text="${book.title}"></option>
-            </select>
+        <div class="form-group row">
+            <label for="book" class="col-sm-5 col-form-label">Book</label>
+            <div class="col-sm-9">
+                <select class="form-control" id="book" th:field="*{book.id}" required>
+                    <option th:each="book : ${books}" th:value="${book.id}" th:text="${book.title}"></option>
+                </select>
+            </div>
         </div>
-        <div class="form-group">
-            <label for="borrowDate">Borrow Date</label>
-            <input type="date" class="form-control" id="borrowDate" th:field="*{borrowDate}" required />
+        <div class="form-group row">
+            <label for="borrowDate" class="col-sm-5 col-form-label">Borrow Date</label>
+            <div class="col-sm-9">
+                <input type="date" class="form-control" id="borrowDate" th:field="*{borrowDate}" required />
+            </div>
         </div>
-        <div class="form-group">
-            <label for="returnDate">Return Date</label>
-            <input type="date" class="form-control" id="returnDate" th:field="*{returnDate}" />
+        <div class="form-group row">
+            <label for="returnDate" class="col-sm-5 col-form-label">Return Date</label>
+            <div class="col-sm-9">
+                <input type="date" class="form-control" id="returnDate" th:field="*{returnDate}" />
+            </div>
         </div>
-        <button type="button" class="btn btn-primary" onclick="confirmSave()">Save</button>
-        <a th:href="@{/borrow-records/all-borrows}" class="btn btn-secondary">Cancel</a>
+        <div class="form-group row">
+            <div class="offset-sm-0 col-sm-9">
+                <button type="button" class="btn btn-primary mr-2" onclick="confirmSave()">Save</button>
+                <a th:href="@{/borrow-records/all-borrows}" class="btn btn-secondary">Cancel</a>
+            </div>
+        </div>
     </form>
 </div>
+
 
 <script th:inline="javascript">
     function confirmSave() {
@@ -60,6 +85,8 @@
             Swal.fire('Success!', 'Borrow record has been saved!', 'success');
         }
     }
+
+
 </script>
 </body>
 </html>

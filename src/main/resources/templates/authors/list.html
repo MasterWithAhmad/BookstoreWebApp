@@ -3,14 +3,14 @@
 <head th:replace="fragments/header :: head"></head>
 <body>
 <div class="container mt-4">
-    <h2>Author List</h2>
     <nav th:replace="fragments/navbar :: nav"></nav>
+    <h2>Author List</h2>
     <form class="form-inline mb-4">
         <input class="form-control mr-sm-2" type="search" id="searchInput" placeholder="Search by name or bio"
                aria-label="Search"><i class="fas fa-search"></i>
     </form>
     <a href="/authors/add" class="btn btn-primary mb-3">
-        <i class="fa fa-plus"></i> Add New Book
+        <i class="fa fa-plus"></i> Add New Author
     </a>
     <table class="table table-bordered table-striped">
         <thead class="thead-dark">

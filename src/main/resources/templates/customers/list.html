@@ -22,6 +22,7 @@
     <table class="table table-bordered table-striped">
         <thead class="thead-dark">
         <tr>
+            <th>ID</th>
             <th>Name</th>
             <th>Email</th>
             <th>Phone</th>
@@ -30,6 +31,7 @@
         </thead>
         <tbody id="customerTableBody">
         <tr th:each="customer : ${customers}">
+            <td th:text="${customer.id}">ID</td>
             <td th:text="${customer.name}">Customer Name</td>
             <td th:text="${customer.email}">Email</td>
             <td th:text="${customer.phone}">Phone</td>
@@ -37,8 +39,10 @@
                 <a th:href="@{/customers/edit/{id}(id=${customer.id})}" class="btn btn-sm btn-primary">
                     <i class="fa fa-edit"></i>Edit
                 </a>
-                <a th:href="@{/customers/{id}/delete(id=${customer.id})}" class="btn btn-sm btn-danger">
-                    <i class="fa fa-trash"></i>Delete</a>
+                <button type="button" class="btn btn-sm btn-danger"
+                        th:onclick="'javascript:deleteCustomer(' + ${customer.id} + ')'">
+                    <i class="fa fa-trash"></i>Delete
+                </button>
             </td>
         </tr>
         </tbody>
@@ -88,7 +92,7 @@
         }
     });
 
-    function deleteBook(bookId) {
+    function deleteCustomer(customerId) {
     swal({
         title: "Are you sure?",
         text: "Once deleted, you will not be able to recover this customer!",
@@ -118,9 +122,6 @@
         }
     });
 }
-
-</script>
-
 
 </script>
 <!-- Footer -->

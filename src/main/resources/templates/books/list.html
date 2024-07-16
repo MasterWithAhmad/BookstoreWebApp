@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/header :: head"></head>
+<head th:replace="fragments/header :: head">
+</head>
 <body>
 <div class="container mt-4">
-    <h2>Book List</h2>
     <nav th:replace="fragments/navbar :: nav"></nav>
+    <h2>Book List</h2>
     <form class="form-inline mb-4">
         <input class="form-control mr-sm-2" type="search" id="searchInput" placeholder="Search by title or author"
                aria-label="Search"><i class="fas fa-search"></i>
@@ -131,6 +132,7 @@
         }
     });
     }
+
 
 
 </script>

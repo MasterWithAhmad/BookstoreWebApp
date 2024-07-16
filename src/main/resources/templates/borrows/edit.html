@@ -1,39 +1,84 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org ">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Borrow Record</title>
+    <style>
+        /* Additional custom styles */
+        .container {
+            max-width: 1000px;
+            border: 1px solid #ddd; /* Border around the form */
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1); /* Box shadow for a subtle lift */
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+    .form-group label {
+      font-weight: bold;
+    }
+
+    .form-control {
+      border-radius: 5px;
+      border: 1px solid #ced4da;
+      padding: 10px;
+      transition: border-color 0.3s;
+    }
+
+
+    </style>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
-<div class="container mt-4">
-    <h2>Edit Borrow Record</h2>
-    <form th:action="@{/borrow-records/edit/{id}(id=${borrowRecord.id})}" th:object="${borrowRecord}" method="post" id="editBorrowForm">
+<div class="container">
+    <h2 class="text-center mb-4">Edit Borrow Record</h2>
+    <form th:action="@{/borrow-records/edit/{id}(id=${borrowRecord.id})}" th:object="${borrowRecord}" method="post"
+          id="editBorrowForm">
         <input type="hidden" th:field="*{id}"/>
         <div class="form-group">
-            <label for="customer">Customer</label>
-            <select class="form-control" id="customer" th:field="*{customer.id}" required>
-                <option th:each="customer : ${customers}" th:value="${customer.id}" th:text="${customer.name}"></option>
-            </select>
+            <label for="customer" class="col-sm-2 col-form-label">Customer</label>
+            <div class="col-sm-10">
+                <select class="form-control" id="customer" th:field="*{customer.id}" required>
+                    <option th:each="customer : ${customers}" th:value="${customer.id}"
+                            th:text="${customer.name}"></option>
+                </select>
+            </div>
+
         </div>
         <div class="form-group">
-            <label for="book">Book</label>
-            <select class="form-control" id="book" th:field="*{book.id}" required>
-                <option th:each="book : ${books}" th:value="${book.id}" th:text="${book.title}"></option>
-            </select>
+            <label for="book" class="col-sm-2 col-form-label">Book</label>
+            <div class="col-sm-10">
+                <select class="form-control" id="book" th:field="*{book.id}" required>
+                    <option th:each="book : ${books}" th:value="${book.id}" th:text="${book.title}"></option>
+                </select>
+            </div>
+
         </div>
         <div class="form-group">
-            <label for="borrowDate">Borrow Date</label>
-            <input type="date" class="form-control" id="borrowDate" th:field="*{borrowDate}" th:value="${borrowRecord.borrowDate != null ? #temporals.format(borrowRecord.borrowDate, 'yyyy-MM-dd') : ''}" required/>
+            <label for="borrowDate" class="col-sm-2 col-form-label">Borrow Date</label>
+            <div class="col-sm-10">
+                <input type="date" class="form-control" id="borrowDate" th:field="*{borrowDate}"
+                       th:value="${borrowRecord.borrowDate != null ? #temporals.format(borrowRecord.borrowDate, 'yyyy-MM-dd') : ''}"
+                       required/>
+            </div>
         </div>
         <div class="form-group">
-            <label for="returnDate">Return Date</label>
-            <input type="date" class="form-control" id="returnDate" th:field="*{returnDate}" th:value="${borrowRecord.returnDate != null ? #temporals.format(borrowRecord.returnDate, 'yyyy-MM-dd') : ''}"/>
+            <label for="returnDate" class="col-sm-2 col-form-label">Return Date</label>
+            <div class="col-sm-10">
+                <input type="date" class="form-control" id="returnDate" th:field="*{returnDate}"
+                       th:value="${borrowRecord.returnDate != null ? #temporals.format(borrowRecord.returnDate, 'yyyy-MM-dd') : ''}"/>
+            </div>
+
         </div>
-        <button type="button" class="btn btn-primary" onclick="confirmSave()">Save Changes</button>
-        <a th:href="@{/borrow-records/all-borrows}" class="btn btn-secondary">Cancel</a>
+        <div class="form-group row">
+            <div class="col-sm-10 offset-sm-2">
+                <button type="button" class="btn btn-primary" onclick="confirmSave()">Save Changes</button>
+                <a th:href="@{/borrow-records/all-borrows}" class="btn btn-secondary">Cancel</a>
+            </div>
+        </div>
     </form>
 </div>
 
@@ -53,14 +98,23 @@
             }
         });
     }
+
+
+
+
+
+
+
 </script>
 
-<script th:inline="javascript">
-    /* Handle success message */
-    const successMessage = /[[${successMessage != null ? '"' + successMessage + '"' : 'null'}]]/ null;
-    if (successMessage === 'updated') {
-        Swal.fire('Success!', 'Borrow record has been updated!', 'success');
-    }
-</script>
+<!--<script th:inline="javascript">-->
+<!--    /* Handle success message */-->
+<!--    const successMessage = /[[${successMessage != null ? '"' + successMessage + '"' : 'null'}]]/ null;-->
+<!--    if (successMessage === 'updated') {-->
+<!--        Swal.fire('Success!', 'Borrow record has been updated!', 'success');-->
+<!--    }-->
+
+
+<!--</script>-->
 </body>
 </html>
