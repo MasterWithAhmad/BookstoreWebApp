@@ -56,7 +56,7 @@ BookStoreWebApp is a web application for managing a bookstore. It allows staff t
  ## Set Up the Database
 
 1. **Create a PostgreSQL Database**:
-   - Name the database `bookstore`.
+   - Name the database `book_store_db`.
 
 2. **Update Database Connection Settings**:
    - Open the `src/main/resources/application.properties` file.
